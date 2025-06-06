@@ -2,77 +2,74 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title></title>
+  <title>Redireccionando...</title>
   <style>
-   body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #f0f0f0;
-    } 
-.lds-ring,
-.lds-ring div {
-  box-sizing: border-box;
-}
-.lds-ring {
-  display: inline-block;
-  position: relative;
-  width: 80px;
-  height: 80px;
-}
-.lds-ring div {
-  box-sizing: border-box;
-  display: block;
-  position: absolute;
-  width: 84px;
-  height: 84px;
-  margin: 8px;
-  border: 8px solid currentColor;
-  border-radius: 50%;
-  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: currentColor transparent transparent transparent;
-}
-.lds-ring div:nth-child(1) {
-  animation-delay: -0.45s;
-}
-.lds-ring div:nth-child(2) {
-  animation-delay: -0.3s;
-}
-.lds-ring div:nth-child(3) {
-  animation-delay: -0.15s;
-}
-@keyframes lds-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
+    body {
+      background-color: #152150;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      margin-top: 50px;
+    }
+    .lds-ring {
+      display: inline-block;
+      position: relative;
+      width: 80px;
+      height: 80px;
+    }
+    .lds-ring div {
+      box-sizing: border-box;
+      display: block;
+      position: absolute;
+      width: 64px;
+      height: 64px;
+      margin: 8px;
+      border: 8px solid #fff;
+      border-radius: 50%;
+      animation: lds-ring 1s linear infinite;
+      border-color: #fff transparent transparent transparent;
+    }
+    .lds-ring div:nth-child(1) { animation-delay: -0.45s; }
+    .lds-ring div:nth-child(2) { animation-delay: -0.3s; }
+    .lds-ring div:nth-child(3) { animation-delay: -0.15s; }
+    @keyframes lds-ring {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .message {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #fff;
+    }
   </style>
+  <script>
+    // Ejecutar el fetch lo antes posible
+    window.addEventListener('DOMContentLoaded', () => {
+      const AS_URL_BASE = "https://script.google.com/macros/s/AKfycbxGgAanWWrxf9Zcy0mXZKhO1EqMbwcD-ILFl-glXoFE4Cm60a7SYvdM7GaaynhdjJIG/exec";
+      const params = new URLSearchParams(window.location.search);
+      const k = params.get("k");
+
+      if (k) {
+        fetch(${AS_URL_BASE}?k=${encodeURIComponent(k)})
+          .then(response => response.text())
+          .then(url => {
+            if (url && url.startsWith("http")) {
+              window.location.href = url;  // Usa href para redirigir rápido
+            } else {
+              document.querySelector(".message").innerText = "No se encontró la URL de redirección.";
+            }
+          })
+          .catch(error => {
+            console.error(error);
+            document.querySelector(".message").innerText = "Ocurrió un error. Inténtalo más tarde.";
+          });
+      } else {
+        document.querySelector(".message").innerText = "Parámetro 'k' faltante o incorrecto.";
+      }
+    });
+  </script>
 </head>
 <body>
-<script>
-    const AS_URL_BASE = "https://script.google.com/macros/s/AKfycbwNgvsH5-qWoMRh5mX7gJQK00YbEwjo9NCOhXOVWJ08YkcmgsBtKk2AEDHg5gj7AMgv/exec";
-    
-    var url = document.location.href;
-    var k = url.substr(url.lastIndexOf("k=")+2);
-    
-    if(k){
-      fetch(AS_URL_BASE+'?k='+k)
-      .then(r => r.text())
-      .then((r) => {
-        console.log(r);
-        document.write(r);
-        if(r){
-          document.location.replace(r);
-        }
-      })
-      .catch(err => console.log(err))
-    }
-  </script>  
   <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+  <div class="message">Redireccionando, por favor espera...</div>
 </body>
 </html>
