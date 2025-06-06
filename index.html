@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="utf-8">
   <title>Redireccionando...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       background-color: #152150;
@@ -42,28 +43,27 @@
     }
   </style>
   <script>
-    // Ejecutar el fetch lo antes posible
     window.addEventListener('DOMContentLoaded', () => {
-      const AS_URL_BASE = "https://script.google.com/macros/s/AKfycbxGgAanWWrxf9Zcy0mXZKhO1EqMbwcD-ILFl-glXoFE4Cm60a7SYvdM7GaaynhdjJIG/exec";
+      const AS_URL_BASE = "https://script.google.com/macros/s/AKfycbyOmgUlGyrnmeKUyR2Y_-Qwp7lxsWW96jqHYtSkgBIcnmVMjs0Rtb0EHb5ms411-h1H/exec"; // Pega aquí la URL real de tu Apps Script
       const params = new URLSearchParams(window.location.search);
       const k = params.get("k");
 
       if (k) {
-        fetch(${AS_URL_BASE}?k=${encodeURIComponent(k)})
+        fetch(`${AS_URL_BASE}?k=${encodeURIComponent(k)}`)
           .then(response => response.text())
           .then(url => {
             if (url && url.startsWith("http")) {
-              window.location.href = url;  // Usa href para redirigir rápido
+              window.location.href = url; // Redirige al destino
             } else {
-              document.querySelector(".message").innerText = "No se encontró la URL de redirección.";
+              document.querySelector(".message").innerText = `Error: ${url}`;
             }
           })
           .catch(error => {
             console.error(error);
-            document.querySelector(".message").innerText = "Ocurrió un error. Inténtalo más tarde.";
+            document.querySelector(".message").innerText = "Ocurrió un error de conexión.";
           });
       } else {
-        document.querySelector(".message").innerText = "Parámetro 'k' faltante o incorrecto.";
+        document.querySelector(".message").innerText = "Parámetro 'k' faltante en la URL.";
       }
     });
   </script>
